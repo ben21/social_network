@@ -54,7 +54,9 @@ a {
     color: #3b5998;
 }
 
-form p.error {
+ul.errorlist {
     margin-left: 160px;
+    padding: 0;
+    list-style-type: none;
     color: #d23d24;
 }
