@@ -15,3 +15,8 @@ class Message(models.Model):
     author = models.ForeignKey('Person', on_delete=models.CASCADE)
     content = models.TextField()
     publication_date = models.DateField()
+
+class Faculty(models.Model):
+    name = models.CharField(max_length = 30)
+    color = models.CharField(max_length = 6)
+
