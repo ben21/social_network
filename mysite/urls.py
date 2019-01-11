@@ -18,8 +18,10 @@ from django.urls import path
 from mysite.views import welcome, login
 from django.conf.urls import url
 
+
 urlpatterns = [
     url('^$', login),
     url('^login$', login),
     path('welcome', welcome),
+    url('^admin/', admin.site.urls)
 ]
