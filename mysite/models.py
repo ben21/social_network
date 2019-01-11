@@ -10,6 +10,7 @@ class Person(models.Model):
     cellphone_number = models.CharField(max_length = 20)
     password = models.CharField(max_length = 32)
     friends = models.ManyToManyField('self')
+    faculty = models.ForeignKey('Faculty')
 
 class Message(models.Model):
     author = models.ForeignKey('Person', on_delete=models.CASCADE)
