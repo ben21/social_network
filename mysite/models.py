@@ -34,3 +34,7 @@ class Employee(models.Model):
     office = models.CharField(max_length = 30)
     campus = models.ForeignKey('Campus')
     job = models.ForeignKey('Job')
+
+class Student(models.Model):
+    cursus = models.ForeignKey('Cursus')
+    year = models.IntegerField()
