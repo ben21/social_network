@@ -20,3 +20,9 @@ class Faculty(models.Model):
     name = models.CharField(max_length = 30)
     color = models.CharField(max_length = 6)
 
+class Campus(models.Model):
+    name = models.CharField(max_length = 30)
+    address = models.CahhrField(max_length = 60)
+
+class Job(models.Model):
+    title = models.CharField(max_length = 30)
