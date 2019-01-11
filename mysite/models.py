@@ -10,7 +10,7 @@ class Person(models.Model):
     cellphone_number = models.CharField(max_length = 20)
     password = models.CharField(max_length = 32)
     friends = models.ManyToManyField('self')
-    faculty = models.ForeignKey('Faculty')
+    faculty = models.ForeignKey('Faculty', on_delete=models.CASCADE)
 
 class Message(models.Model):
     author = models.ForeignKey('Person', on_delete=models.CASCADE)
@@ -23,7 +23,7 @@ class Faculty(models.Model):
 
 class Campus(models.Model):
     name = models.CharField(max_length = 30)
-    address = models.CahhrField(max_length = 60)
+    address = models.CharField(max_length = 60)
 
 class Job(models.Model):
     title = models.CharField(max_length = 30)
@@ -33,9 +33,9 @@ class Cursus(models.Model):
 
 class Employee(models.Model):
     office = models.CharField(max_length = 30)
-    campus = models.ForeignKey('Campus')
-    job = models.ForeignKey('Job')
+    campus = models.ForeignKey('Campus', on_delete=models.CASCADE)
+    job = models.ForeignKey('Job', on_delete=models.CASCADE)
 
 class Student(models.Model):
-    cursus = models.ForeignKey('Cursus')
+    cursus = models.ForeignKey('Cursus', on_delete=models.CASCADE)
     year = models.IntegerField()
