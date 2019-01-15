@@ -9,6 +9,9 @@ def login(request):
     if len(request.POST) > 0:
         form = LoginForm(request.POST)
         if form.is_valid():
+            user_email = form.cleaned_data['email']
+            logged_user = Person.objects.get(email = user_email)
+            request.session['logged_user_id'] = logged_user.id
             return redirect('/welcome')
         else:
             return render(request, 'login.html', { 'form': form})
