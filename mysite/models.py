@@ -12,30 +12,51 @@ class Person(models.Model):
     friends = models.ManyToManyField('self')
     faculty = models.ForeignKey('Faculty', on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
 class Message(models.Model):
     author = models.ForeignKey('Person', on_delete=models.PROTECT)
     content = models.TextField()
     publication_date = models.DateField()
 
+    def __str__(self):
+        if len(self.content) > 20:
+            return self.content[:19] + "..."
+        else:
+            return self.content
+
 class Faculty(models.Model):
     name = models.CharField(max_length = 30)
     color = models.CharField(max_length = 6)
+
+    def __str__(self):
+        return self.name
 
 class Campus(models.Model):
     name = models.CharField(max_length = 30)
     address = models.CharField(max_length = 60)
 
+    def __str__(self):
+        return self.name
+
 class Job(models.Model):
     title = models.CharField(max_length = 30)
+
+    def __str__(self):
+        return self.title
 
 class Cursus(models.Model):
     title = models.CharField(max_length = 30)
 
-class Employee(models.Model):
+    def __str__(self):
+        return self.title
+
+class Employee(Person):
     office = models.CharField(max_length = 30)
     campus = models.ForeignKey('Campus', on_delete=models.PROTECT)
     job = models.ForeignKey('Job', on_delete=models.PROTECT)
 
-class Student(models.Model):
+class Student(Person):
     cursus = models.ForeignKey('Cursus', on_delete=models.PROTECT)
     year = models.IntegerField()

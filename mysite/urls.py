@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mysite.views import welcome, login
+from mysite.views import welcome, login, register
 from django.conf.urls import url
 
 
@@ -23,5 +23,6 @@ urlpatterns = [
     url('^$', login),
     url('^login$', login),
     path('welcome', welcome),
-    url('^admin/', admin.site.urls)
+    url('^register$', register),
+    url('^admin/', admin.site.urls)    
 ]
