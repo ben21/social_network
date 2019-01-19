@@ -20,7 +20,7 @@ from django.conf.urls import url
 
 
 urlpatterns = [
-    url('^$', login),
+    url('^$', welcome),
     url('^login$', login),
     path('welcome', welcome),
     url('^register$', register),

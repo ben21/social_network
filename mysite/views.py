@@ -1,9 +1,18 @@
 from django.shortcuts import render, redirect
-from datetime import datetime
-from mysite.forms import LoginForm, StudentProfileForm, EmployeeProfileForm
+from datetime import datetime, date
+from mysite.forms import LoginForm, StudentProfileForm, EmployeeProfileForm, AddFriendForm
+from mysite.models import Person, Student, Employee, Message
 
 def welcome(request):
-    return render(request, 'welcome.html', { 'current_date_time' : datetime.now })
+    logged_user = get_logged_user_from_request(request)
+    if logged_user:
+        if 'newMessage' in request.GET and request.GET['newMessage'] != '':
+            newMessage = Message(author = logged_user, content = request.GET['newMessage'], publication_date = date.today())
+            newMessage.save()
+        friendMessages = Message.objects.filter(author__friends = logged_user).order_by('-publication_date')
+        return render(request, 'welcome.html', { 'logged_user' : logged_user, 'friendMessages': friendMessages })
+    else:
+        return redirect('/login')
 
 def login(request):
     if len(request.POST) > 0:
@@ -38,3 +47,34 @@ def register(request):
         studentForm = StudentProfileForm(prefix='st')
         employeeForm = EmployeeProfileForm(prefix='em')
         return render(request, 'user_profile.html', {'studentForm': studentForm, 'employeeForm': employeeForm})
+
+def get_logged_user_from_request(request):
+    if 'logged_user_id' in request.session:
+        logged_user_id = request.session['logged_user_id']
+        if len(Student.objects.filter(id=logged_user_id)) == 1:
+            return Student.objects.get(id= logged_user_id)
+        elif len(Employee.objects.filter(id=logged_user_id)) == 1:
+            return Employee.objects.get(id= logged_user_id)
+        else:
+            return None
+    else:
+        return None
+
+def add_friend(request):
+    logged_user = get_logged_user_from_request(request)
+    if logged_user:
+        if len(request.GET) > 0:
+            form = AddFriendForm(request.GET)
+            if form.is_valid():
+                new_friend_email = form.cleaned_data['email']
+                newFriend = Person.objects.filter(email = new_friend_email)
+                logged_user.friends.add(newFriend)
+                logged_user.save()
+                return redirect('/welcome')
+            else: 
+                return render(request, 'add_friend.html',{ 'form': form })
+        else:
+            form = AddFriendForm()
+            return render(request, 'add_friend.html', { 'form': form})
+    else:
+        return redirect('/login')
