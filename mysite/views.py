@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from datetime import datetime, date
 from mysite.forms import LoginForm, StudentProfileForm, EmployeeProfileForm, AddFriendForm
 from mysite.models import Person, Student, Employee, Message
+from django import forms
+from django.http import HttpResponse
+from django.core import exceptions
 
 def welcome(request):
     logged_user = get_logged_user_from_request(request)
@@ -119,3 +122,22 @@ def modify_profile(request):
             return render(request, 'modify_profile.html', {'form': form})
     else:
         return redirect('/login')
+
+def ajax_check_email_field(request):
+    html_to_return = ''
+    if 'value' in request.GET:
+        field = forms.EmailField()
+        try:
+            field.clean(request.GET['value'])
+        except forms.ValidationError as ve:
+            html_to_return = '<ul class="errorlist">'
+            for message in ve.messages:
+                html_to_return += '<li>' + message + '</li>'
+            html_to_return += '</ul>'
+
+        if len(html_to_return) == 0:
+            if len(Person.objects.filter(email=request.GET['value'])) >= 1:
+                html_to_return = '<ul class="errorlist">'
+                html_to_return += '<li>Cette adresse est déjà utilisée!</li>'
+                html_to_return += '</ul>'
+    return HttpResponse(html_to_return)

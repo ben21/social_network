@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mysite.views import welcome, login, register, add_friend, show_profile, modify_profile
+from mysite.views import welcome, login, register, add_friend, show_profile, modify_profile, ajax_check_email_field
 from django.conf.urls import url
 
 
@@ -27,5 +27,6 @@ urlpatterns = [
     url('^addFriend$', add_friend),
     url('^showProfile$', show_profile),
     url('^modifyProfile', modify_profile),
+    url("^ajax/checkEmailField$", ajax_check_email_field),
     url('^admin/', admin.site.urls)    
 ]
