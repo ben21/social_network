@@ -175,3 +175,19 @@ section#friendList ul {
 section#friendList ul li {
     margin: 0 0 5px 0;
 }
+
+dl.fieldList dt {
+    display: block;
+    width: 250px;
+    float: left;
+    text-align: right;
+    padding: 0 10px 0 0;
+    font-weight: bold;
+}
+
+dl.fieldList dd {
+    display: block;
+    width: 450px;
+    padding: 0px;
+    margin: 0 0 10px 0;
+}

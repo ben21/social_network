@@ -78,3 +78,22 @@ def add_friend(request):
             return render(request, 'add_friend.html', { 'form': form})
     else:
         return redirect('/login')
+
+def show_profile(request):
+    logged_user = get_logged_user_from_request(request)
+    if logged_user:
+        if 'userToShow' in request.GET and request.GET['userToShow'] != '':
+            user_to_show_id = int(request.GET['userToShow'])
+            results = Person.objects.filter(id=user_to_show_id)
+            if len(results) == 1:
+                if Student.objects.filter(id=user_to_show_id):
+                    user_to_show = Student.objects.filter(id=user_to_show_id)
+                else:
+                    user_to_show = Employee.objects.get(id=user_to_show_id)
+                return render(request, 'show_profile.html', {'user_to_show': user_to_show})
+            else:
+                return render(request, 'show_profile.html', {'user_to_show': logged_user})
+        else:
+            return render(request, 'show_profile.html', {'user_to_show': logged_user})
+    else:
+        return redirect('/login') 
