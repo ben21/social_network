@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mysite.views import welcome, login, register, add_friend, show_profile
+from mysite.views import welcome, login, register, add_friend, show_profile, modify_profile
 from django.conf.urls import url
 
 
@@ -26,5 +26,6 @@ urlpatterns = [
     url('^register$', register),
     url('^addFriend$', add_friend),
     url('^showProfile$', show_profile),
+    url('^modifyProfile', modify_profile),
     url('^admin/', admin.site.urls)    
 ]

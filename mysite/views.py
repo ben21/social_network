@@ -96,4 +96,26 @@ def show_profile(request):
         else:
             return render(request, 'show_profile.html', {'user_to_show': logged_user})
     else:
-        return redirect('/login') 
+        return redirect('/login')
+
+def modify_profile(request):
+    logged_user = get_logged_user_from_request(request)
+    if logged_user:
+        if len(request.GET) > 0:
+            if type(logged_user) == Student:
+                form = StudentProfileForm(request.GET, instance=logged_user)
+            else:
+                form = EmployeeProfileForm(request.GET, instance=logged_user)
+            if form.is_valid():
+                form.save()
+                return redirect('/welcome')
+            else:
+                return redirect(request, 'modify_profile.html', {'form': form})
+        else:
+            if type(logged_user) == Student:
+                form = StudentProfileForm(instance=logged_user)
+            else:
+                form = EmployeeProfileForm(instance=logged_user)
+            return render(request, 'modify_profile.html', {'form': form})
+    else:
+        return redirect('/login')
